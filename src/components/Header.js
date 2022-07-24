@@ -6,9 +6,10 @@ import PowerSettingsNewIcon from '@material-ui/icons/PowerSettingsNew';
 import SearchIcon from '@material-ui/icons/Search';
 
 
+
 const useStyles = makeStyles(theme => ({
     root: {
-        backgroundColor: '#fff',
+        backgroundColor: '#000',
         
     },
     searchInput: {
@@ -31,32 +32,7 @@ export default function Header() {
     return (
         <AppBar position="static" className={classes.root}>
             <Toolbar>
-                <Grid container
-                    alignItems="center">
-                    <Grid item>
-                        <InputBase
-                            placeholder="Search topics"
-                            className={classes.searchInput}
-                            startAdornment={<SearchIcon fontSize="small" />}
-                        />
-                    </Grid>
-                    <Grid item sm></Grid>
-                    <Grid item>
-                        <IconButton>
-                            <Badge badgeContent={4} color="secondary">
-                                <NotificationsNoneIcon fontSize="small" />
-                            </Badge>
-                        </IconButton>
-                        <IconButton>
-                            <Badge badgeContent={3} color="primary">
-                                <ChatBubbleOutlineIcon fontSize="small" />
-                            </Badge>
-                        </IconButton>
-                        <IconButton>
-                            <PowerSettingsNewIcon fontSize="small" />
-                        </IconButton>
-                    </Grid>
-                </Grid>
+            
             </Toolbar>
         </AppBar>
     )

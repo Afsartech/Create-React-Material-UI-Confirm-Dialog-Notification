@@ -4,8 +4,7 @@ import SideMenu from "../components/SideMenu";
 import { makeStyles, CssBaseline, createMuiTheme, ThemeProvider } from '@material-ui/core';
 import Header from "../components/Header";
 import PageHeader from '../components/PageHeader';
-
-import Employees from "../pages/Employees/Employees";
+import Orginization from "../pages/Orginization/Orginization";
 
 const theme = createMuiTheme({
   palette: {
@@ -38,7 +37,7 @@ const theme = createMuiTheme({
 
 const useStyles = makeStyles({
   appMain: {
-    paddingLeft: '320px',
+    
     width: '100%'
   }
 })
@@ -48,11 +47,11 @@ function App() {
 
   return (
     <ThemeProvider theme={theme}>
-      <SideMenu />
+     
       <div className={classes.appMain}>
         <Header />
         
-        <Employees />
+        <Orginization />
       </div>
       <CssBaseline />
     </ThemeProvider>

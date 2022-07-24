@@ -2,14 +2,9 @@ import React, { useState, useEffect } from 'react'
 import { Grid, } from '@material-ui/core';
 import Controls from "../../components/controls/Controls";
 import { useForm, Form } from '../../components/useForm';
-import * as employeeService from "../../services/employeeService";
+import * as userTypeService from "../../services/userTypeService";
+import { addMinutes } from 'date-fns';
 
-
-const genderItems = [
-    { id: 'male', title: 'Male' },
-    { id: 'female', title: 'Female' },
-    { id: 'other', title: 'Other' },
-]
 
 const initialFValues = {
     id: 0,
@@ -17,13 +12,16 @@ const initialFValues = {
     email: '',
     mobile: '',
     city: '',
-    gender: 'male',
+    address1:'',
+    address2:'',
+    country:'',
+    state:'',
+    zipcode:'',
     departmentId: '',
-    hireDate: new Date(),
-    isPermanent: false,
+    isActive: false,
 }
 
-export default function EmployeeForm(props) {
+export default function OrginizationForm(props) {
     const { addOrEdit, recordForEdit } = props
 
     const validate = (fieldValues = values) => {
@@ -32,10 +30,22 @@ export default function EmployeeForm(props) {
             temp.fullName = fieldValues.fullName ? "" : "This field is required."
         if ('email' in fieldValues)
             temp.email = (/$^|.+@.+..+/).test(fieldValues.email) ? "" : "Email is not valid."
+        if ('email' in fieldValues)
+             temp.email = fieldValues.email ? "" : "This field is required."
         if ('mobile' in fieldValues)
             temp.mobile = fieldValues.mobile.length > 9 ? "" : "Minimum 10 numbers required."
         if ('departmentId' in fieldValues)
             temp.departmentId = fieldValues.departmentId.length != 0 ? "" : "This field is required."
+        if ('address1' in fieldValues)
+            temp.address1 = fieldValues.address1 ? "" : "This field is required."
+        if ('country' in fieldValues)
+            temp.country = fieldValues.country ? "" : "This field is required."
+        if ('state' in fieldValues)
+            temp.state = fieldValues.state ? "" : "This field is required."
+        if ('city' in fieldValues)
+            temp.city = fieldValues.city ? "" : "This field is required."
+        if ('zipcode' in fieldValues)
+            temp.zipcode = fieldValues.zipcode ? "" : "This field is required." 
         setErrors({
             ...temp
         })
@@ -73,60 +83,95 @@ export default function EmployeeForm(props) {
                 <Grid item xs={6}>
                     <Controls.Input
                         name="fullName"
-                        label="Full Name"
+                        label="Orginization Name"
                         value={values.fullName}
                         onChange={handleInputChange}
                         error={errors.fullName}
+                        size="small"
                     />
                     <Controls.Input
-                        label="Email"
+                        label="Orginization Email"
                         name="email"
                         value={values.email}
                         onChange={handleInputChange}
                         error={errors.email}
+                        size="small"
                     />
                     <Controls.Input
-                        label="Mobile"
+                        label="(000) - 000 - 0000"
                         name="mobile"
                         value={values.mobile}
                         onChange={handleInputChange}
+                        helperText="Please enter your organization's phone number"
                         error={errors.mobile}
+                        size="small"
+                    />
+                      
+                     <Controls.Input
+                        label="Address Line 1"
+                        name="address1"
+                        value={values.address1}
+                        onChange={handleInputChange}
+                        error={errors.address1}
+                        size="small"
                     />
                     <Controls.Input
+                        label="Address Line 2"
+                        name="address2"
+                        value={values.address2}
+                        onChange={handleInputChange}
+                        size="small"
+                    />  
+                </Grid>
+                <Grid item xs={6}>
+                    
+                <Controls.Input
+                        label="Country"
+                        name="country"
+                        value={values.country}
+                        onChange={handleInputChange}
+                        error={errors.country}
+                        size="small"
+                    />
+                    <Controls.Input
+                        label="State"
+                        name="state"
+                        value={values.state}
+                        onChange={handleInputChange}
+                        error={errors.state}
+                        size="small"
+                    />
+                      <Controls.Input
                         label="City"
                         name="city"
                         value={values.city}
                         onChange={handleInputChange}
+                        error={errors.city}
+                        size="small"
                     />
-
-                </Grid>
-                <Grid item xs={6}>
-                    <Controls.RadioGroup
-                        name="gender"
-                        label="Gender"
-                        value={values.gender}
+                    <Controls.Input
+                        label="Zipcode"
+                        name="zipcode"
+                        value={values.zipcode}
                         onChange={handleInputChange}
-                        items={genderItems}
+                        error={errors.zipcode}
+                        size="small"
                     />
-                    <Controls.Select
+                     <Controls.Select
                         name="departmentId"
+                        size="small"
                         label="Department"
                         value={values.departmentId}
                         onChange={handleInputChange}
-                        options={employeeService.getDepartmentCollection()}
+                        options={userTypeService.getDepartmentCollection()}
                         error={errors.departmentId}
-                    />
-                    <Controls.DatePicker
-                        name="hireDate"
-                        label="Hire Date"
-                        value={values.hireDate}
-                        onChange={handleInputChange}
-                    />
+                    />     
                     <Controls.Checkbox
-                        name="isPermanent"
-                        label="Permanent Employee"
-                        value={values.isPermanent}
+                        name="isActive"
+                        label="Is Active"
+                        value={values.isActive}
                         onChange={handleInputChange}
+                        size="small"
                     />
 
                     <div>
@@ -143,3 +188,5 @@ export default function EmployeeForm(props) {
         </Form>
     )
 }
+
+

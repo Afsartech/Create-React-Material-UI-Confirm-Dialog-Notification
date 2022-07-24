@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
-import EmployeeForm from "./EmployeeForm";
+import OrginizationForm from './OrginazationForm';
 import PageHeader from "../../components/PageHeader";
 import PeopleOutlineTwoToneIcon from '@material-ui/icons/PeopleOutlineTwoTone';
 import { Paper, makeStyles, TableBody, TableRow, TableCell, Toolbar, InputAdornment } from '@material-ui/core';
 import useTable from "../../components/useTable";
-import * as employeeService from "../../services/employeeService";
+import * as userTypeService from "../../services/userTypeService";
 import Controls from "../../components/controls/Controls";
 import { Search } from "@material-ui/icons";
 import AddIcon from '@material-ui/icons/Add';
@@ -30,18 +30,19 @@ const useStyles = makeStyles(theme => ({
 
 
 const headCells = [
-    { id: 'fullName', label: 'Employee Name' },
-    { id: 'email', label: 'Email Address (Personal)' },
-    { id: 'mobile', label: 'Mobile Number' },
-    { id: 'department', label: 'Department' },
-    { id: 'actions', label: 'Actions', disableSorting: true }
+    { id: 'fullName', label: 'Name' },
+    { id: 'addressline1', label: 'Address' },
+    { id: 'email', label: 'Email' },
+    { id: 'mobile', label: 'Phone Number' },
+    { id: 'isActive', label: 'Active'},
+    { id: 'isAction', label: 'Actions'}
 ]
 
-export default function Employees() {
+export default function Orginization() {
 
     const classes = useStyles();
     const [recordForEdit, setRecordForEdit] = useState(null)
-    const [records, setRecords] = useState(employeeService.getAllEmployees())
+    const [records, setRecords] = useState(userTypeService.getAlluserTypes())
     const [filterFn, setFilterFn] = useState({ fn: items => { return items; } })
     const [openPopup, setOpenPopup] = useState(false)
     const [notify, setNotify] = useState({ isOpen: false, message: '', type: '' })
@@ -66,15 +67,15 @@ export default function Employees() {
         })
     }
 
-    const addOrEdit = (employee, resetForm) => {
-        if (employee.id == 0)
-            employeeService.insertEmployee(employee)
+    const addOrEdit = (userType, resetForm) => {
+        if (userType.id == 0)
+            userTypeService.insertuserType(userType)
         else
-            employeeService.updateEmployee(employee)
+            userTypeService.updateuserType(userType)
         resetForm()
         setRecordForEdit(null)
         setOpenPopup(false)
-        setRecords(employeeService.getAllEmployees())
+        setRecords(userTypeService.getAlluserTypes())
         setNotify({
             isOpen: true,
             message: 'Submitted Successfully',
@@ -92,8 +93,8 @@ export default function Employees() {
             ...confirmDialog,
             isOpen: false
         })
-        employeeService.deleteEmployee(id);
-        setRecords(employeeService.getAllEmployees())
+        userTypeService.deleteuserType(id);
+        setRecords(userTypeService.getAlluserTypes())
         setNotify({
             isOpen: true,
             message: 'Deleted Successfully',
@@ -103,16 +104,12 @@ export default function Employees() {
 
     return (
         <>
-            <PageHeader
-                title="New Employee"
-                subTitle="Form design with validation"
-                icon={<PeopleOutlineTwoToneIcon fontSize="large" />}
-            />
+           
             <Paper className={classes.pageContent}>
 
                 <Toolbar>
                     <Controls.Input
-                        label="Search Employees"
+                        label="Search userTypes"
                         className={classes.searchInput}
                         InputProps={{
                             startAdornment: (<InputAdornment position="start">
@@ -123,7 +120,6 @@ export default function Employees() {
                     />
                     <Controls.Button
                         text="Add New"
-                        variant="outlined"
                         startIcon={<AddIcon />}
                         className={classes.newButton}
                         onClick={() => { setOpenPopup(true); setRecordForEdit(null); }}
@@ -136,9 +132,10 @@ export default function Employees() {
                             recordsAfterPagingAndSorting().map(item =>
                                 (<TableRow key={item.id}>
                                     <TableCell>{item.fullName}</TableCell>
+                                    <TableCell>{item.address1}</TableCell>
                                     <TableCell>{item.email}</TableCell>
                                     <TableCell>{item.mobile}</TableCell>
-                                    <TableCell>{item.department}</TableCell>
+                                    <TableCell>{item.isActive.toString()}</TableCell>
                                     <TableCell>
                                         <Controls.ActionButton
                                             color="primary"
@@ -166,11 +163,11 @@ export default function Employees() {
                 <TblPagination />
             </Paper>
             <Popup
-                title="Employee Form"
+                title="Add an Organization"
                 openPopup={openPopup}
                 setOpenPopup={setOpenPopup}
             >
-                <EmployeeForm
+                <OrginizationForm
                     recordForEdit={recordForEdit}
                     addOrEdit={addOrEdit} />
             </Popup>
